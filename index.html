@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vertical Image Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #1877f2;
+            text-align: center;
+        }
+        #upload-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #file-input {
+            display: none;
+        }
+        button {
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        #gallery {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .image-container {
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .image-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .remove-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 20px;
+            line-height: 1;
+            cursor: pointer;
+        }
+        #navigation {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        #navigation button {
+            margin: 0 10px;
+        }
+        #asmita-button {
+            background-color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Vertical Image Gallery</h1>
+        <div id="upload-container">
+            <input type="file" id="file-input" accept="image/*" multiple>
+            <button id="upload-button">Upload Images</button>
+        </div>
+        <div id="gallery"></div>
+        <div id="navigation">
+            <button id="prev-button" style="display: none;">Previous Image</button>
+            <button id="next-button" style="display: none;">Next Image</button>
+            <button id="asmita-button">View Asmita Textbook</button>
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('file-input');
+        const uploadButton = document.getElementById('upload-button');
+        const gallery = document.getElementById('gallery');
+        const prevButton = document.getElementById('prev-button');
+        const nextButton = document.getElementById('next-button');
+        const asmitaButton = document.getElementById('asmita-button');
+
+        let images = [];
+        let currentIndex = 0;
+
+        uploadButton.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const files = e.target.files;
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        images.push(event.target.result);
+                        if (images.length === 1) {
+                            showImage(0);
+                        }
+                        updateNavigation();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+
+        function showImage(index) {
+            gallery.innerHTML = '';
+            if (images.length > 0) {
+                const imageContainer = document.createElement('div');
+                imageContainer.className = 'image-container';
+
+                const img = document.createElement('img');
+                img.src = images[index];
+                imageContainer.appendChild(img);
+
+                const removeButton = document.createElement('button');
+                removeButton.className = 'remove-button';
+                removeButton.innerHTML = '&times;';
+                removeButton.addEventListener('click', () => {
+                    images.splice(index, 1);
+                    if (images.length === 0) {
+                        gallery.innerHTML = '';
+                        currentIndex = 0;
+                    } else {
+                        currentIndex = Math.min(currentIndex, images.length - 1);
+                        showImage(currentIndex);
+                    }
+                    updateNavigation();
+                });
+                imageContainer.appendChild(removeButton);
+
+                gallery.appendChild(imageContainer);
+            }
+        }
+
+        function updateNavigation() {
+            prevButton.style.display = images.length > 1 ? 'inline-block' : 'none';
+            nextButton.style.display = images.length > 1 ? 'inline-block' : 'none';
+        }
+
+        prevButton.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            showImage(currentIndex);
+        });
+
+        nextButton.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % images.length;
+            showImage(currentIndex);
+        });
+
+        asmitaButton.addEventListener('click', () => {
+            window.location.href = 'asmita-textbook.html';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vertical Image Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #nav-bar {
+            background-color: #f0f0f0;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .nav-button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #upload-container {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px dashed #ccc;
+            text-align: center;
+        }
+        #gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        #gallery img {
+            max-width: 100%;
+            height: auto;
+            margin: 10px;
+        }
+        #navigation {
+            margin-top: 20px;
+            text-align: center;
+        }
+        #navigation button {
+            margin: 0 10px;
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Vertical Image Gallery</h1>
+
+        <div id="nav-bar">
+            <button class="nav-button" onclick="filterImages('science')">Science</button>
+            <button class="nav-button" onclick="filterImages('math')">Math</button>
+            <button class="nav-button" onclick="filterImages('english')">English</button>
+            <button class="nav-button" onclick="filterImages('social')">Social Studies</button>
+            <button class="nav-button" onclick="filterImages('all')">All Subjects</button>
+        </div>
+
+        <div id="upload-container">
+            <input type="file" id="fileInput" multiple accept="image/*" onchange="handleFileSelect(event)">
+            <p>Upload Images (Select multiple files if needed)</p>
+        </div>
+
+        <div id="gallery">
+            <!-- Images will be dynamically added here -->
+        </div>
+
+        <div id="navigation">
+            <button onclick="previousImage()">Previous Image</button>
+            <button onclick="nextImage()">Next Image</button>
+            <button onclick="viewAsmitaTextbook()">View Asmita Textbook</button>
+        </div>
+    </div>
+
+    <script>
+        let currentIndex = 0;
+        let images = [];
+
+        function handleFileSelect(event) {
+            const files = event.target.files;
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (file.type.match('image.*')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        images.push(e.target.result);
+                        displayImage(images.length - 1);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+
+        function displayImage(index) {
+            const gallery = document.getElementById('gallery');
+            const img = document.createElement('img');
+            img.src = images[index];
+            gallery.appendChild(img);
+        }
+
+        function previousImage() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateGallery();
+            }
+        }
+
+        function nextImage() {
+            if (currentIndex < images.length - 1) {
+                currentIndex++;
+                updateGallery();
+            }
+        }
+
+        function updateGallery() {
+            const gallery = document.getElementById('gallery');
+            gallery.innerHTML = '';
+            displayImage(currentIndex);
+        }
+
+        function viewAsmitaTextbook() {
+            window.location.href = 'asmita-textbook.html';
+        }
+
+        function filterImages(subject) {
+            // This function would filter images based on subject
+            // For now, it just logs the selected subject
+            console.log('Filtering images for:', subject);
+        }
+    </script>
+</body>
+</html>

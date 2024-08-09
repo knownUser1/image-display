@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asmita Setbook - Class 10 Science Nepal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #1877f2;
+            text-align: center;
+        }
+        .image-container {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .caption {
+            font-style: italic;
+            color: #666;
+        }
+        .description {
+            text-align: justify;
+            margin-top: 10px;
+        }
+        #navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        button {
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Asmita Setbook - Class 10 Science Nepal</h1>
+        <div id="gallery"></div>
+        <div id="navigation">
+            <button id="prev-button">Previous</button>
+            <button id="next-button">Next</button>
+        </div>
+    </div>
+
+    <script>
+        const gallery = document.getElementById('gallery');
+        const prevButton = document.getElementById('prev-button');
+        const nextButton = document.getElementById('next-button');
+
+        const images = [
+            {
+                src: "asmita1.jpg",
+                caption: "Fig 1.1",
+                description: ""
+            },
+            {
+                src: "asmita2.jpg",
+                caption: "Fig 1.2",
+                description: ""
+            },
+            {
+                src: "asmita3.jpg",
+                caption: "Fig 1.3",
+                description: ""
+            },
+            {
+                src: "asmita4.jpg",
+                caption: "Fig 4.5",
+                description: ""
+            },
+            {
+                src: "asmita.jpg",
+                caption: "Fig 5.1",
+                description: ""
+            }
+        ];
+
+        let currentIndex = 0;
+
+        function showImage(index) {
+            const image = images[index];
+            gallery.innerHTML = `
+                <div class="image-container">
+                    <img src="${image.src}" alt="${image.caption}">
+                    <p class="caption">${image.caption}</p>
+                    <p class="description">${image.description}</p>
+                </div>
+            `;
+        }
+
+        function updateNavigation() {
+            prevButton.disabled = currentIndex === 0;
+            nextButton.disabled = currentIndex === images.length - 1;
+        }
+
+        prevButton.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                showImage(currentIndex);
+                updateNavigation();
+            }
+        });
+
+        nextButton.addEventListener('click', () => {
+            if (currentIndex < images.length - 1) {
+                currentIndex++;
+                showImage(currentIndex);
+                updateNavigation();
+            }
+        });
+
+        // Initial display
+        showImage(currentIndex);
+        updateNavigation();
+    </script>
+</body>
+</html>
